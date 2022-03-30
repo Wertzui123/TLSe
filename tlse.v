@@ -12,4 +12,8 @@ $if gcboehm ? {
 $if windows {
 	#flag -l ws2_32
 }
-#include "thirdparty/adapter.c"
+$if tinyc{
+	#include "thirdparty/adapter_tcc.c" // TODO: Add support for TCC
+}$else{
+	#include "thirdparty/adapter.c"
+}

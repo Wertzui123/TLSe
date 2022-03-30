@@ -9,6 +9,7 @@ This V library is a wrapper around the great [TLSe library](https://github.com/e
 
 ## Limitations
 * `libtomcrypt.c` does currently not compile with TCC
+<br>You can still compile the this library with TCC by defining `TINYC_TLSE_COMPILE`, but it will throw a runtime error when trying to use any TLSe functions.
 
 ## License
 Public domain, BSD, MIT. Choose one.
