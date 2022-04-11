@@ -50,7 +50,7 @@ pub fn (mut con SSLConn) connect(host string, port int) ?int {
 	socket := C.connect_socket(host.str, port)
 	con.handle = socket
 	con.duration = 30 * time.second
-	con.ctx = C.tls_create_context(0, tls_v12)
+	con.ctx = C.tls_create_context(0, tlse.tls_v12)
 	C.connect_tls(socket, con.ctx)
 	return socket
 }
