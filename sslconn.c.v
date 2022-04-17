@@ -38,11 +38,11 @@ pub fn (con SSLConn) socket_read_into_ptr(buf_ptr &u8, len int) ?int {
 	return res
 }
 
-pub fn (con SSLConn) write(u8s []u8) ?int {
+pub fn (con SSLConn) write(bytes []u8) ?int {
 	if C.tls_established(con.ctx) == 0 {
 		return error('Cannot write to an unestablished TLS connection')
 	}
-	return C.write_tls(con.handle, con.ctx, &u8(u8s.data), u8s.len)
+	return C.write_tls(con.handle, con.ctx, &u8(bytes.data), bytes.len)
 }
 
 pub fn (mut con SSLConn) connect(host string, port int) ?int {
