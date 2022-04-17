@@ -9,6 +9,7 @@ $if gcboehm ? {
 #flag -I @VMODROOT
 #flag -D TLS_AMALGAMATION
 #flag -D LTC_NO_ASM
+#flag -D NO_SSL_COMPATIBLE_INTERFACE
 $if windows {
 	#flag -l ws2_32
 }
