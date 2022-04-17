@@ -16,7 +16,7 @@ fn C.tls_create_context(is_server u8, version u16) &C.TLSContext
 fn C.tls_established(context &C.TLSContext) int
 fn C.tls_close_notify(context &C.TLSContext)
 
-fn C.connect_socket(host &byte, port int) int
+fn C.connect_socket(host &u8, port int) int
 fn C.connect_tls(socket int, context &C.TLSContext) int
 fn C.read_tls(socket int, context &C.TLSContext, buffer &u8, len int) int
 fn C.write_tls(socket int, context &C.TLSContext, buffer &u8, len u32) int
@@ -28,21 +28,21 @@ mut:
 	duration time.Duration
 }
 
-pub fn (con SSLConn) read(mut buffer []byte) ?int {
-	res := con.socket_read_into_ptr(&byte(buffer.data), buffer.len) ?
+pub fn (con SSLConn) read(mut buffer []u8) ?int {
+	res := con.socket_read_into_ptr(&u8(buffer.data), buffer.len) ?
 	return res
 }
 
-pub fn (con SSLConn) socket_read_into_ptr(buf_ptr &byte, len int) ?int {
+pub fn (con SSLConn) socket_read_into_ptr(buf_ptr &u8, len int) ?int {
 	res := C.read_tls(con.handle, con.ctx, buf_ptr, len)
 	return res
 }
 
-pub fn (con SSLConn) write(bytes []byte) ?int {
+pub fn (con SSLConn) write(u8s []u8) ?int {
 	if C.tls_established(con.ctx) == 0 {
 		return error('Cannot write to an unestablished TLS connection')
 	}
-	return C.write_tls(con.handle, con.ctx, &byte(bytes.data), bytes.len)
+	return C.write_tls(con.handle, con.ctx, &u8(u8s.data), u8s.len)
 }
 
 pub fn (mut con SSLConn) connect(host string, port int) ?int {
