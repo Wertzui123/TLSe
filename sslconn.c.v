@@ -29,7 +29,7 @@ mut:
 }
 
 pub fn (con SSLConn) read(mut buffer []u8) ?int {
-	res := con.socket_read_into_ptr(&u8(buffer.data), buffer.len) ?
+	res := con.socket_read_into_ptr(&u8(buffer.data), buffer.len)?
 	return res
 }
 
