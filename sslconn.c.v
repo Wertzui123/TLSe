@@ -21,7 +21,7 @@ fn C.connect_tls(socket int, context &C.TLSContext) int
 fn C.read_tls(socket int, context &C.TLSContext, buffer &u8, len int) int
 fn C.write_tls(socket int, context &C.TLSContext, buffer &u8, len u32) int
 
-struct SSLConn {
+pub struct SSLConn {
 mut:
 	ctx      &C.TLSContext
 	handle   int
