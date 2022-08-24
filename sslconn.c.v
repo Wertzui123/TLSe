@@ -28,24 +28,24 @@ mut:
 	duration time.Duration
 }
 
-pub fn (con SSLConn) read(mut buffer []u8) ?int {
-	res := con.socket_read_into_ptr(&u8(buffer.data), buffer.len)?
+pub fn (con SSLConn) read(mut buffer []u8) int {
+	res := con.socket_read_into_ptr(&u8(buffer.data), buffer.len)
 	return res
 }
 
-pub fn (con SSLConn) socket_read_into_ptr(buf_ptr &u8, len int) ?int {
+pub fn (con SSLConn) socket_read_into_ptr(buf_ptr &u8, len int) int {
 	res := C.read_tls(con.handle, con.ctx, buf_ptr, len)
 	return res
 }
 
-pub fn (con SSLConn) write(bytes []u8) ?int {
+pub fn (con SSLConn) write(bytes []u8) !int {
 	if C.tls_established(con.ctx) == 0 {
 		return error('Cannot write to an unestablished TLS connection')
 	}
 	return C.write_tls(con.handle, con.ctx, &u8(bytes.data), bytes.len)
 }
 
-pub fn (mut con SSLConn) connect(host string, port int) ?int {
+pub fn (mut con SSLConn) connect(host string, port int) int {
 	// TODO: Allow for custom TCP connections passed to this function; this currently does not work since V sockets are non-blocking
 	socket := C.connect_socket(host.str, port)
 	con.handle = socket
@@ -65,7 +65,7 @@ pub fn new_ssl_conn() &SSLConn {
 	}
 }
 
-pub fn create_tcp_conn_from_handle(sockfd int) ?&net.TcpConn {
+pub fn create_tcp_conn_from_handle(sockfd int) &net.TcpConn {
 	return &net.TcpConn{
 		sock: voidptr(sockfd)
 		// TODO: Hack to get around the fact that net.TcpSocket is private
