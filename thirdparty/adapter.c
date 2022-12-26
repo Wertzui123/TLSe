@@ -108,7 +108,7 @@ int read_tls(int sockfd, struct TLSContext *context, void *buffer, int len)
         if (tls_established(context))
         {
             unsigned char read_buffer[len];
-            read_res = tls_read(context, read_buffer, sizeof(read_buffer));
+            read_res = tls_read(context, read_buffer, sizeof(read_buffer) - read);
             if (read_res > 0)
             {
                 memcpy(buffer + read, read_buffer, read_res);
