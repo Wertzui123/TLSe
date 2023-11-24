@@ -61,7 +61,7 @@ pub fn (con SSLConn) shutdown() {
 
 pub fn new_ssl_conn() &SSLConn {
 	return &SSLConn{
-		ctx: 0
+		ctx: unsafe { nil }
 	}
 }
 
